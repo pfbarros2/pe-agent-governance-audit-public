@@ -1,0 +1,44 @@
+{
+  "schema_version": "1",
+  "name": "Over-granted associate distribution",
+  "tenant_id": "demo-pe-synthetic",
+  "permissions": [
+    {
+      "role": "portfolio_associate",
+      "tool": "distribute_ic_pack",
+      "resource_scope": "company:PC-*"
+    },
+    {
+      "role": "portfolio_associate",
+      "tool": "read_operating_metrics",
+      "resource_scope": "company:PC-*"
+    },
+    {
+      "role": "portfolio_associate",
+      "tool": "draft_ic_memo_excerpt",
+      "resource_scope": "company:PC-*"
+    },
+    {
+      "role": "portfolio_associate",
+      "tool": "escalate_material_issue",
+      "resource_scope": "company:PC-*"
+    },
+    {
+      "role": "deal_partner",
+      "tool": "approve_ic_distribution",
+      "resource_scope": "company:PC-*"
+    },
+    {
+      "role": "deal_partner",
+      "tool": "distribute_ic_pack",
+      "resource_scope": "company:PC-*"
+    }
+  ],
+  "budgets": [
+    {
+      "scope": "trace",
+      "limit_units": 8,
+      "actor_id": null
+    }
+  ]
+}

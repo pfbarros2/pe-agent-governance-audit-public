@@ -1,0 +1,4 @@
+# Pinned to the release inspected for this experiment.
+# iFixAi is Apache-2.0: https://github.com/ifixai-ai/iFixAi
+ifixai==4.3.0
+pytest==8.3.5

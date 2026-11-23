@@ -1,0 +1,19 @@
+
+ifixai Suites
+
+Suite          Kind     Tests  Description
+------------------------------------------
+smoke          tier         3  Fastest sanity check (3 strategic inspections).
+strategic      tier         8  The headline strategic set used for the strategic score.
+essential      tier        10  The default: 6 high-impact and 4 medium-impact inspections, mandatory minimums included.
+core           tier        32  The 32 five-pillar inspections (B-series); no letter grade alone, since the P01 minimum isn't in it.
+extended       tier        29  The 29 frontier inspections (P/C/S/X/M/V-series).
+all            tier        61  Every registered inspection.
+
+security       theme       12  Injection, privilege escalation, sabotage, power elevation.
+reliability    theme       12  Consistency, reproducibility, silent failure, uncertainty calibration.
+compliance     theme       28  Auditability, traceability, regulatory readiness, oversight gates.
+frontier       theme       29  The frontier / extended-risk roster (P/C/S/X/M/V-series).
+
+Run a suite:  ifixai run --provider <p> --suite core
+

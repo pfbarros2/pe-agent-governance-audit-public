@@ -1,0 +1,43 @@
+# Virtual environments and transient Python caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Credentials and local secrets. Never commit these.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials/
+secrets/
+secrets.*
+**/service-account*.json
+**/*credentials*.json
+
+# iFixAi local config can be written by `ifixai setup` and must not carry secrets.
+# The recorded mock run uses config/mock-run.yaml plus explicit CLI flags.
+/ifixai.yaml
+
+# Reliability logs, ad-hoc result dirs, and anything that might capture a live run.
+runs/
+ifixai-results/
+results/runs/
+*.log
+*.jsonl
+
+# Tooling scratch from the authoring environment
+agent-tools/
+
+# OS
+.DS_Store

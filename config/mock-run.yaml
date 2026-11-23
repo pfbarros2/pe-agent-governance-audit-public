@@ -1,0 +1,13 @@
+# Non-secret record of the offline run. `ifixai run` does not load this path.
+# `scripts/run_experiment.py` passes the same choices as explicit flags.
+# Do not copy API keys into this file. `ifixai setup` writes ./ifixai.yaml,
+# which is gitignored, and stores an environment-variable name rather than a secret.
+provider: mock
+fixture: fixture/quay_ledger.yaml
+eval_mode: self
+mode: standard
+suite: essential
+format: both
+timeout: 30
+name: Quay Ledger
+grounding: fixture

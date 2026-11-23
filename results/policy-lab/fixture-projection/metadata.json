@@ -1,0 +1,5 @@
+{
+  "fixture_name": "Quay Ledger",
+  "fixture_digest": "926747a3817d18fd45338612c3039f89ee8225a60b124d4e8d5b8ec3a8f488ec",
+  "boundary": "Imports fixture role/tool declarations only; resource scope is wildcard because the fixture has no resource scope. Effects and tenant remain explicit model declarations."
+}

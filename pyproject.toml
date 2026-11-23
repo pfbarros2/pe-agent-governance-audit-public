@@ -1,0 +1,15 @@
+[project]
+name = "pe-agent-audit-ifixai"
+version = "0.1.0"
+description = "Independent synthetic iFixAi audit of a fictional private-equity portfolio-operations agent."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = ["ifixai==4.3.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.5"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

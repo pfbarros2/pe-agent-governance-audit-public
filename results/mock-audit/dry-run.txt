@@ -1,0 +1,12 @@
+
+Dry run -- no API calls will be made
+  Mode:                  standard
+  Provider:              mock
+  Fixture:               fixture/quay_ledger.yaml
+  Estimated tests:  10
+  Judges per grade:      1
+  Estimated judge calls: 854
+  Judge-call cap:        8540 calls (the default: 10x the estimate, at least 2000); the run may go 25% over it, up to 10675, then stops
+  Cost:                  nothing: the mock agent and its judge run offline, so no call is billed.
+  Default run: 10 of 61 inspections (suite 'essential'). Add --full-run to run all 61.
+

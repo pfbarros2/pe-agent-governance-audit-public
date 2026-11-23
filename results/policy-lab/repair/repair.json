@@ -1,0 +1,604 @@
+{
+  "status": "FOUND",
+  "original_bundle_digest": "d6761758498043b075c9ebe1e5319ebdf927680f6ba5e9492a5ae97701cdf5f4",
+  "candidates": [
+    {
+      "removed_rule_indices": [
+        0
+      ],
+      "report": {
+        "decision": "VERIFIED",
+        "property_status": {
+          "no_unapproved_distribution": "VERIFIED"
+        },
+        "goal_status": {
+          "legitimate_escalation": "REACHABLE",
+          "partner_distribution": "REACHABLE"
+        },
+        "states_discovered": 6,
+        "states_expanded": 6,
+        "transitions_examined": 36,
+        "transitions_enabled": 5,
+        "frontier_exhausted": true,
+        "cutoff_reasons": [],
+        "coverage_issues": [],
+        "policy_digest": "775ec801512de0e91f272db7c1a1726ca6a3141983b8943c8c02cc3448322f84",
+        "config_digest": "e2020bba8206dd228ad4160da789471f2cf84f70d2e7fd8077793ec5dcaa121e",
+        "report_digest": "ace92462e63b69777fb49ee27e0fb934b0981b68e672c3d559322dd2f057a4f4",
+        "bundle_digest": "e9e0d317e7b6f8a2c35ae85595b07b2ee99f656f222cb66007a23cd7fe3de03a"
+      }
+    }
+  ],
+  "selected_bundle": {
+    "schema_version": "1",
+    "model": {
+      "schema_version": "1",
+      "name": "Quay Ledger IC distribution",
+      "tenant_id": "demo-pe-synthetic",
+      "initial_facts": {
+        "metrics_read": false,
+        "memo_drafted": false,
+        "partner_notified": false,
+        "partner_approved": false,
+        "pack_distributed": false
+      },
+      "actors": {
+        "associate": {
+          "roles": [
+            "portfolio_associate"
+          ]
+        },
+        "partner": {
+          "roles": [
+            "deal_partner"
+          ]
+        }
+      },
+      "actions": [
+        {
+          "action_id": "01_read",
+          "actor_id": "associate",
+          "tool": "read_operating_metrics",
+          "resource": "company:PC-1842",
+          "requires": {
+            "metrics_read": false
+          },
+          "effects": {
+            "metrics_read": true
+          },
+          "cost_units": 1
+        },
+        {
+          "action_id": "02_draft",
+          "actor_id": "associate",
+          "tool": "draft_ic_memo_excerpt",
+          "resource": "company:PC-1842",
+          "requires": {
+            "metrics_read": true,
+            "memo_drafted": false
+          },
+          "effects": {
+            "memo_drafted": true
+          },
+          "cost_units": 1
+        },
+        {
+          "action_id": "03_escalate",
+          "actor_id": "associate",
+          "tool": "escalate_material_issue",
+          "resource": "company:PC-1842",
+          "requires": {
+            "memo_drafted": true,
+            "partner_notified": false
+          },
+          "effects": {
+            "partner_notified": true
+          },
+          "cost_units": 1
+        },
+        {
+          "action_id": "04_associate_distribute",
+          "actor_id": "associate",
+          "tool": "distribute_ic_pack",
+          "resource": "company:PC-1842",
+          "requires": {
+            "memo_drafted": true,
+            "pack_distributed": false
+          },
+          "effects": {
+            "pack_distributed": true
+          },
+          "cost_units": 1
+        },
+        {
+          "action_id": "05_partner_approve",
+          "actor_id": "partner",
+          "tool": "approve_ic_distribution",
+          "resource": "company:PC-1842",
+          "requires": {
+            "memo_drafted": true,
+            "partner_notified": true,
+            "partner_approved": false
+          },
+          "effects": {
+            "partner_approved": true
+          },
+          "cost_units": 1
+        },
+        {
+          "action_id": "06_partner_distribute",
+          "actor_id": "partner",
+          "tool": "distribute_ic_pack",
+          "resource": "company:PC-1842",
+          "requires": {
+            "partner_approved": true,
+            "pack_distributed": false
+          },
+          "effects": {
+            "pack_distributed": true
+          },
+          "cost_units": 1
+        }
+      ],
+      "properties": [
+        {
+          "property_id": "no_unapproved_distribution",
+          "label": "IC pack must not leave the drafting desk without partner approval",
+          "forbidden": {
+            "pack_distributed": true,
+            "partner_approved": false
+          }
+        }
+      ],
+      "goals": [
+        {
+          "goal_id": "legitimate_escalation",
+          "label": "Associate can raise a material issue without distributing the pack",
+          "requires": {
+            "memo_drafted": true,
+            "partner_notified": true,
+            "pack_distributed": false
+          }
+        },
+        {
+          "goal_id": "partner_distribution",
+          "label": "Partner-approved distribution stays reachable after escalation",
+          "requires": {
+            "partner_notified": true,
+            "partner_approved": true,
+            "pack_distributed": true
+          }
+        }
+      ]
+    },
+    "policy": {
+      "schema_version": "1",
+      "name": "Over-granted associate distribution",
+      "tenant_id": "demo-pe-synthetic",
+      "permissions": [
+        {
+          "role": "portfolio_associate",
+          "tool": "read_operating_metrics",
+          "resource_scope": "company:PC-*"
+        },
+        {
+          "role": "portfolio_associate",
+          "tool": "draft_ic_memo_excerpt",
+          "resource_scope": "company:PC-*"
+        },
+        {
+          "role": "portfolio_associate",
+          "tool": "escalate_material_issue",
+          "resource_scope": "company:PC-*"
+        },
+        {
+          "role": "deal_partner",
+          "tool": "approve_ic_distribution",
+          "resource_scope": "company:PC-*"
+        },
+        {
+          "role": "deal_partner",
+          "tool": "distribute_ic_pack",
+          "resource_scope": "company:PC-*"
+        }
+      ],
+      "budgets": [
+        {
+          "scope": "trace",
+          "limit_units": 8,
+          "actor_id": null
+        }
+      ]
+    },
+    "config": {
+      "max_depth": 12,
+      "max_states": 10000,
+      "max_transitions": 200000
+    },
+    "report": {
+      "decision": "VERIFIED",
+      "property_status": {
+        "no_unapproved_distribution": "VERIFIED"
+      },
+      "goal_status": {
+        "legitimate_escalation": "REACHABLE",
+        "partner_distribution": "REACHABLE"
+      },
+      "safety_witnesses": [],
+      "goal_witnesses": [
+        {
+          "objective_id": "legitimate_escalation",
+          "kind": "goal",
+          "initial": {
+            "facts": {
+              "memo_drafted": false,
+              "metrics_read": false,
+              "pack_distributed": false,
+              "partner_approved": false,
+              "partner_notified": false
+            },
+            "budgets": {
+              "trace": 0
+            }
+          },
+          "terminal": {
+            "facts": {
+              "memo_drafted": true,
+              "metrics_read": true,
+              "pack_distributed": false,
+              "partner_approved": false,
+              "partner_notified": true
+            },
+            "budgets": {
+              "trace": 3
+            }
+          },
+          "steps": [
+            {
+              "index": 1,
+              "action_id": "01_read",
+              "actor_id": "associate",
+              "tool": "read_operating_metrics",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                0
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": false,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 0
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 1
+                }
+              }
+            },
+            {
+              "index": 2,
+              "action_id": "02_draft",
+              "actor_id": "associate",
+              "tool": "draft_ic_memo_excerpt",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                1
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 1
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 2
+                }
+              }
+            },
+            {
+              "index": 3,
+              "action_id": "03_escalate",
+              "actor_id": "associate",
+              "tool": "escalate_material_issue",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                2
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 2
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 3
+                }
+              }
+            }
+          ]
+        },
+        {
+          "objective_id": "partner_distribution",
+          "kind": "goal",
+          "initial": {
+            "facts": {
+              "memo_drafted": false,
+              "metrics_read": false,
+              "pack_distributed": false,
+              "partner_approved": false,
+              "partner_notified": false
+            },
+            "budgets": {
+              "trace": 0
+            }
+          },
+          "terminal": {
+            "facts": {
+              "memo_drafted": true,
+              "metrics_read": true,
+              "pack_distributed": true,
+              "partner_approved": true,
+              "partner_notified": true
+            },
+            "budgets": {
+              "trace": 5
+            }
+          },
+          "steps": [
+            {
+              "index": 1,
+              "action_id": "01_read",
+              "actor_id": "associate",
+              "tool": "read_operating_metrics",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                0
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": false,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 0
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 1
+                }
+              }
+            },
+            {
+              "index": 2,
+              "action_id": "02_draft",
+              "actor_id": "associate",
+              "tool": "draft_ic_memo_excerpt",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                1
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": false,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 1
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 2
+                }
+              }
+            },
+            {
+              "index": 3,
+              "action_id": "03_escalate",
+              "actor_id": "associate",
+              "tool": "escalate_material_issue",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                2
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": false
+                },
+                "budgets": {
+                  "trace": 2
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 3
+                }
+              }
+            },
+            {
+              "index": 4,
+              "action_id": "05_partner_approve",
+              "actor_id": "partner",
+              "tool": "approve_ic_distribution",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                3
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": false,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 3
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": true,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 4
+                }
+              }
+            },
+            {
+              "index": 5,
+              "action_id": "06_partner_distribute",
+              "actor_id": "partner",
+              "tool": "distribute_ic_pack",
+              "resource": "company:PC-1842",
+              "cost_units": 1,
+              "permission_indices": [
+                4
+              ],
+              "before": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": false,
+                  "partner_approved": true,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 4
+                }
+              },
+              "after": {
+                "facts": {
+                  "memo_drafted": true,
+                  "metrics_read": true,
+                  "pack_distributed": true,
+                  "partner_approved": true,
+                  "partner_notified": true
+                },
+                "budgets": {
+                  "trace": 5
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "states_discovered": 6,
+      "states_expanded": 6,
+      "transitions_examined": 36,
+      "transitions_enabled": 5,
+      "frontier_exhausted": true,
+      "cutoff_reasons": [],
+      "coverage_issues": [],
+      "not_observed_action_ids": [
+        "04_associate_distribute"
+      ],
+      "model_digest": "23022e8c6169e86e57f5c1932517f1f268598e64056f5e6e345f188d8eb3ccc9",
+      "policy_digest": "775ec801512de0e91f272db7c1a1726ca6a3141983b8943c8c02cc3448322f84",
+      "config_digest": "e2020bba8206dd228ad4160da789471f2cf84f70d2e7fd8077793ec5dcaa121e",
+      "limitations": [
+        "Reachability and verification apply only to the explicit finite model and policy.",
+        "Unmodelled history, actors, effects and business constraints are not evaluated.",
+        "Declared cost units are model counters, not observed billing or runtime resource use.",
+        "Model witnesses are not observed production behavior or runtime enforcement.",
+        "Goals establish existential reachability, not universal liveness."
+      ]
+    },
+    "integrity_digest": "e9e0d317e7b6f8a2c35ae85595b07b2ee99f656f222cb66007a23cd7fe3de03a"
+  },
+  "max_removals": 1,
+  "max_candidates": 64,
+  "transition_budget": 250000,
+  "transitions_examined": 36,
+  "minimality_proven": true,
+  "cutoff_reasons": [],
+  "limitations": [
+    "Search removes declared permission rules only; it does not modify guards, budgets, code or deployed authorization.",
+    "Accepted repairs preserve only the declared model properties and existential completion goals.",
+    "Exhaustion is limited to the specified removal cardinality and does not prove that no other repair exists."
+  ]
+}

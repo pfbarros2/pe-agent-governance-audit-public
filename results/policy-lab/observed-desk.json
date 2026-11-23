@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "no_live_warehouse": true,
+  "unsafe_replay": "MATCHED",
+  "unsafe_steps": [
+    "01_read",
+    "02_draft",
+    "04_associate_distribute"
+  ],
+  "leaked_distributions": [
+    {
+      "actor_id": "associate",
+      "action_id": "04_associate_distribute",
+      "partner_approved_before_send": false,
+      "includes_ic_excerpt": true,
+      "synthetic": true
+    }
+  ],
+  "escalation_replay": "MATCHED",
+  "escalations": [
+    "PC-1842 material issue: EBITDA 18 percent under budget, cash runway 7 weeks. IC pack not attached. SYNTHETIC \u2014 not a real company."
+  ],
+  "distribution_replay": "MATCHED",
+  "approved_distributions": [
+    {
+      "actor_id": "partner",
+      "action_id": "06_partner_distribute",
+      "partner_approved_before_send": true,
+      "includes_ic_excerpt": true,
+      "synthetic": true
+    }
+  ]
+}

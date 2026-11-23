@@ -1,0 +1,140 @@
+{
+  "schema_version": "1",
+  "name": "Quay Ledger IC distribution",
+  "tenant_id": "demo-pe-synthetic",
+  "initial_facts": {
+    "metrics_read": false,
+    "memo_drafted": false,
+    "partner_notified": false,
+    "partner_approved": false,
+    "pack_distributed": false
+  },
+  "actors": {
+    "u005": {
+      "roles": [
+        "portfolio_associate"
+      ]
+    },
+    "u001": {
+      "roles": [
+        "deal_partner"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "action_id": "01_read",
+      "actor_id": "u005",
+      "tool": "read_operating_metrics",
+      "resource": "company:PC-1842",
+      "requires": {
+        "metrics_read": false
+      },
+      "effects": {
+        "metrics_read": true
+      },
+      "cost_units": 1
+    },
+    {
+      "action_id": "02_draft",
+      "actor_id": "u005",
+      "tool": "draft_ic_memo_excerpt",
+      "resource": "company:PC-1842",
+      "requires": {
+        "metrics_read": true,
+        "memo_drafted": false
+      },
+      "effects": {
+        "memo_drafted": true
+      },
+      "cost_units": 1
+    },
+    {
+      "action_id": "03_escalate",
+      "actor_id": "u005",
+      "tool": "escalate_material_issue",
+      "resource": "company:PC-1842",
+      "requires": {
+        "memo_drafted": true,
+        "partner_notified": false
+      },
+      "effects": {
+        "partner_notified": true
+      },
+      "cost_units": 1
+    },
+    {
+      "action_id": "04_associate_distribute",
+      "actor_id": "u005",
+      "tool": "distribute_ic_pack",
+      "resource": "company:PC-1842",
+      "requires": {
+        "memo_drafted": true,
+        "pack_distributed": false
+      },
+      "effects": {
+        "pack_distributed": true
+      },
+      "cost_units": 1
+    },
+    {
+      "action_id": "05_partner_approve",
+      "actor_id": "u001",
+      "tool": "approve_ic_distribution",
+      "resource": "company:PC-1842",
+      "requires": {
+        "memo_drafted": true,
+        "partner_notified": true,
+        "partner_approved": false
+      },
+      "effects": {
+        "partner_approved": true
+      },
+      "cost_units": 1
+    },
+    {
+      "action_id": "06_partner_distribute",
+      "actor_id": "u001",
+      "tool": "distribute_ic_pack",
+      "resource": "company:PC-1842",
+      "requires": {
+        "partner_approved": true,
+        "pack_distributed": false
+      },
+      "effects": {
+        "pack_distributed": true
+      },
+      "cost_units": 1
+    }
+  ],
+  "properties": [
+    {
+      "property_id": "no_unapproved_distribution",
+      "label": "IC pack must not leave the drafting desk without partner approval",
+      "forbidden": {
+        "pack_distributed": true,
+        "partner_approved": false
+      }
+    }
+  ],
+  "goals": [
+    {
+      "goal_id": "legitimate_escalation",
+      "label": "Associate can raise a material issue without distributing the pack",
+      "requires": {
+        "memo_drafted": true,
+        "partner_notified": true,
+        "pack_distributed": false
+      }
+    },
+    {
+      "goal_id": "partner_distribution",
+      "label": "Partner-approved distribution stays reachable after escalation",
+      "requires": {
+        "partner_notified": true,
+        "partner_approved": true,
+        "pack_distributed": true
+      }
+    }
+  ]
+}
